@@ -94,7 +94,7 @@ if __name__ == '__main__':
     y_dev = [l[0] for l in dev_data]
     X_dev = [l[1] for l in dev_data]
     num_iterations =100
-    learning_rate = 1e-4
+    learning_rate = 1e-1
     out_dim = len(L2I)
     in_dim = len(vocab)
     params = ll.create_classifier(in_dim, out_dim)
