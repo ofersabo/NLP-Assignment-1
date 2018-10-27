@@ -9,7 +9,17 @@ def read_data(fname):
     return data
 
 def text_to_bigrams(text):
+    #text = remove_first_word_if_name(text)
     return ["%s%s" % (c1,c2) for c1,c2 in zip(text,text[1:])]
+
+def remove_first_word_if_name(text):
+    try:
+        word, sentence = text.split(" ", 1)
+    except ValueError:
+        return text
+    if (word[0] == '@'):
+        return sentence
+    return text
 
 TRAIN = [(l,text_to_bigrams(t)) for l,t in read_data("train")]
 DEV   = [(l,text_to_bigrams(t)) for l,t in read_data("dev")]

@@ -85,7 +85,7 @@ def create_classifier(in_dim, out_dim):
     returns the parameters (W,b) for a log-linear classifier
     with input dimension in_dim and output dimension out_dim.
     """
-    W = np.random.randn(in_dim, out_dim) * 0.0000001
+    W = np.random.randn(in_dim, out_dim) * 0.000000
     b = np.random.randn(out_dim) * 0.0001
     return [W,b]
 

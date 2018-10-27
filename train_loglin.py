@@ -68,7 +68,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
             params[0] -= grads[0] * learning_rate
             params[1] -= grads[1] * learning_rate
 
-        if ((I+1)%10 == 0 ): learning_rate /= 10
+        if ((I+1)%10 == 0 ): learning_rate /= 5
         train_loss = cum_loss / len(train_data)
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     y_dev = [l[0] for l in dev_data]
     X_dev = [l[1] for l in dev_data]
     num_iterations =100
-    learning_rate = 1e-1
+    learning_rate = 1e-2
     out_dim = len(L2I)
     in_dim = len(vocab)
     params = ll.create_classifier(in_dim, out_dim)
