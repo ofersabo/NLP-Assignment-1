@@ -76,7 +76,7 @@ def loss_and_gradients(x, y, params):
     gW[:, y] -= 1
     gb[y] -= 1
     gW = (x.T * gW)
-    #loss += np.sum(W * W )
+    loss += np.sum(W * W )
     #gW += 2 * W
     return loss,[gW,gb]
 
