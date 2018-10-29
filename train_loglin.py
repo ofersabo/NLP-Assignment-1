@@ -11,7 +11,6 @@ STUDENT={'name': 'Ofer Sabo',
 def feats_to_vec(features):
     # YOUR CODE HERE.
     # Should return a numpy vector of features.
-    numpy_feature = list()
     one_hot = np.zeros(len(vocab))
     bi_gram = text_to_bigrams(features)
     for bi in bi_gram:

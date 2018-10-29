@@ -1,13 +1,15 @@
-import loglinear as ll
+import mlp1 as mlp
 import random
-
-STUDENT={'name': 'YOUR NAME',
-         'ID': 'YOUR ID NUMBER'}
+import train_loglin
+import utils
+import numpy as np
+STUDENT={'name': 'Ofer Sabo',
+         'ID': '201511110'}
 
 def feats_to_vec(features):
     # YOUR CODE HERE.
     # Should return a numpy vector of features.
-    return None
+    return train_loglin.feats_to_vec(features)
 
 def accuracy_on_dataset(dataset, params):
     good = bad = 0.0
@@ -16,7 +18,14 @@ def accuracy_on_dataset(dataset, params):
         # Compute the accuracy (a scalar) of the current parameters
         # on the dataset.
         # accuracy is (correct_predictions / all_predictions)
-        pass
+        label = utils.L2I[label]
+        one_hot = feats_to_vec(features)
+        predicted_label = mlp.predict(one_hot,params)
+        if (predicted_label != label):
+            bad += 1
+        else:
+            good += 1
+
     return good / (good + bad)
 
 def train_classifier(train_data, dev_data, num_iterations, learning_rate, params):
@@ -35,12 +44,17 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
         for label, features in train_data:
             x = feats_to_vec(features) # convert features to a vector.
             y = label                  # convert the label to number if needed.
-            loss, grads = ll.loss_and_gradients(x,y,params)
+
+            loss, grads = mlp.loss_and_gradients(x,utils.L2I[y],params)
             cum_loss += loss
             # YOUR CODE HERE
             # update the parameters according to the gradients
             # and the learning rate.
+            for i in range(len(params)):
+                #print (np.max(grads[i]))
+                params[i] -= grads[i] * learning_rate
 
+        if ((I + 1) % 40 == 0): learning_rate /= 2
         train_loss = cum_loss / len(train_data)
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)
@@ -53,7 +67,17 @@ if __name__ == '__main__':
     # and call train_classifier.
     
     # ...
+    train_data = utils.read_data("train")
+    y_train = [l[0] for l in train_data]
+    X_trrain = [l[1] for l in train_data]
+    dev_data = utils.read_data("dev")
+    y_dev = [l[0] for l in dev_data]
+    X_dev = [l[1] for l in dev_data]
+    num_iterations = 100
+    learning_rate = 1.2
+    out_dim = len(utils.L2I)
+    in_dim = len(utils.vocab)
    
-    params = ll.create_classifier(in_dim, out_dim)
+    params = mlp.create_classifier(in_dim, hid_dim=10,out_dim=out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
 

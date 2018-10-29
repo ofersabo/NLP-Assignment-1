@@ -76,7 +76,7 @@ def loss_and_gradients(x, y, params):
     gW[:, y] -= 1
     gb[y] -= 1
     gW = (x.T * gW)
-    loss += np.sum(W * W )
+    #loss += np.sum(W * W )
     #gW += 2 * W
     return loss,[gW,gb]
 
@@ -86,7 +86,7 @@ def create_classifier(in_dim, out_dim):
     with input dimension in_dim and output dimension out_dim.
     """
     W = np.random.randn(in_dim, out_dim) * 0.000000
-    b = np.random.randn(out_dim) * 0.0001
+    b = np.random.randn(out_dim) * 0.0000
     return [W,b]
 
 if __name__ == '__main__':
@@ -124,10 +124,10 @@ if __name__ == '__main__':
     for _ in xrange(1000):
         W = np.random.randn(W.shape[0],W.shape[1])
         b = np.random.randn(b.shape[0])
-        result = gradient_check(_loss_and_b_grad, b)
-        if (not result):
-            print "ERROR"
-            exit()
+        # result = gradient_check(_loss_and_b_grad, b)
+        # if (not result):
+        #     print "ERROR"
+        #     exit()
         if (not gradient_check(_loss_and_W_grad, W)):
             print "ERROR"
             exit()
