@@ -12,6 +12,11 @@ def text_to_bigrams(text):
     #text = remove_first_word_if_name(text)
     return ["%s%s" % (c1,c2) for c1,c2 in zip(text,text[1:])]
 
+def text_to_unigrams(text):
+    #text = remove_first_word_if_name(text)
+    return ["%s" % c1 for c1 in text]
+
+
 def remove_first_word_if_name(text):
     try:
         word, sentence = text.split(" ", 1)
@@ -21,8 +26,8 @@ def remove_first_word_if_name(text):
         return sentence
     return text
 
-TRAIN = [(l,text_to_bigrams(t)) for l,t in read_data("train")]
-DEV   = [(l,text_to_bigrams(t)) for l,t in read_data("dev")]
+TRAIN = [(l,text_to_unigrams(t)) for l,t in read_data("train")]
+DEV   = [(l,text_to_unigrams(t)) for l,t in read_data("dev")]
 
 from collections import Counter
 fc = Counter()

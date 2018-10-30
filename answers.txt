@@ -1,0 +1,32 @@
+1. Can you get better accuracies on the language identification
+ task using the multi-layer perceptron?
+
+ A: No, I received better accuracy on this task with the logliner model.
+ To be precise:
+ train logLiner: 0.88 accuracy
+ train multi layer perceptopn: 0.72 accuracy
+ Each model has it's own learning rate.
+
+2. Switch the feature set of the
+   language identification from letter-bigrams to letter-unigrams (single letters).
+   What’s the best you can do with the log-linear model with
+   these features? What’s the best you can do with the MLP?
+
+   A: Unigram features reduces both models accurcy.
+      logliner model:
+      99 0.757341416639 0.741216795201 0.65
+
+      mlp1:
+      99 0.606152246863 0.786632390746 0.62
+
+3. Verify that your MLP can learn the XOR function
+   (you can see a training- set for XOR in the file xor data.py).
+   How many iterations does it take to correctly solve xor?
+
+    It took the module 37 iteration to learn the XOR problem.
+     
+
+
+
+
+

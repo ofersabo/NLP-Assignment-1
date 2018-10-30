@@ -76,10 +76,10 @@ def create_classifier(in_dim, hid_dim, out_dim):
     return:
     a flat list of 4 elements, W, b, U, b_tag.
     """
-    W = np.random.rand(in_dim,hid_dim) * 0.0001
-    b = np.random.rand(hid_dim) * 0.0001
-    U = np.random.rand(hid_dim,out_dim) * 0.0001
-    b_tag = np.random.rand(out_dim) * 0.0001
+    W = np.random.rand(in_dim,hid_dim)
+    b = np.random.rand(hid_dim)
+    U = np.random.rand(hid_dim,out_dim)
+    b_tag = np.random.rand(out_dim)
     params = [W,b,U,b_tag]
     return params
 
@@ -124,7 +124,7 @@ if __name__ == '__main__':
         loss,grads = loss_and_gradients([1,2,3],0,[W, b, U, b_tag])
         return loss,grads[3]
 
-    for _ in xrange(1000):
+    for _ in xrange(100):
         U = np.random.randn(U.shape[0],U.shape[1])
         b_tag = np.random.randn(b_tag.shape[0])
         b = np.random.randn(b.shape[0])

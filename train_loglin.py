@@ -3,8 +3,8 @@ import loglinear as ll
 import random
 from utils import *
 import numpy as np
-start_count = False
-problematic_line = []
+#start_count = False
+#problematic_line = []
 STUDENT={'name': 'Ofer Sabo',
          'ID': '201511110'}
 
@@ -13,16 +13,17 @@ def feats_to_vec(features):
     # Should return a numpy vector of features.
     one_hot = np.zeros(len(vocab))
     bi_gram = text_to_bigrams(features)
-    for bi in bi_gram:
+    uni_gram = text_to_unigrams(features)
+    for bi in uni_gram:
         if bi in vocab:
             one_hot[F2I[bi]] = 1
 
     return one_hot
 
 def accuracy_on_dataset(dataset, params):
-    global problematic_line
+    #global problematic_line
     from loglinear import predict
-    problematic_line = []
+    #problematic_line = []
     good = bad = 0.0
     for label, features in dataset:
         # YOUR CODE HERE
@@ -34,12 +35,12 @@ def accuracy_on_dataset(dataset, params):
         predicted_label = predict(one_hot,params)
         if (predicted_label != label):
             bad += 1
-            if (start_count):
-                problematic_line.append( features)
+            #if (start_count):
+                #problematic_line.append( features)
         else:
             good += 1
 
-    problematic_line = set(problematic_line)
+    #problematic_line = set(problematic_line)
     return good / (good + bad)
 
 def train_classifier(train_data, dev_data, num_iterations, learning_rate, params):
@@ -52,7 +53,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
     learning_rate: the learning rate to use.
     params: list of parameters (initial values)
     """
-    global start_count
+    #global start_count
     for I in xrange(num_iterations):
         cum_loss = 0.0 # total loss in this iteration.
         random.shuffle(train_data)
@@ -64,14 +65,15 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
             # YOUR CODE HERE
             # update the parameters according to the gradients
             # and the learning rate.
+            print type(params[0])
             params[0] -= grads[0] * learning_rate
             params[1] -= grads[1] * learning_rate
 
-        if ((I+1)%10 == 0 ): learning_rate /= 5
+        if ((I+1)%10 == 0 ): learning_rate /= 2
         train_loss = cum_loss / len(train_data)
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)
-        if (dev_accuracy > 0.88): start_count = True
+        #if (dev_accuracy > 0.88): start_count = True
         print I, train_loss, train_accuracy, dev_accuracy
     return params
 
@@ -93,10 +95,10 @@ if __name__ == '__main__':
     y_dev = [l[0] for l in dev_data]
     X_dev = [l[1] for l in dev_data]
     num_iterations =100
-    learning_rate = 1e-2
+    learning_rate = 1e-3
     out_dim = len(L2I)
     in_dim = len(vocab)
     params = ll.create_classifier(in_dim, out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
 
-    print problematic_line
+    #print problematic_line
