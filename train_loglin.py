@@ -14,7 +14,7 @@ def feats_to_vec(features):
     one_hot = np.zeros(len(vocab))
     bi_gram = text_to_bigrams(features)
     uni_gram = text_to_unigrams(features)
-    for bi in uni_gram:
+    for bi in bi_gram:
         if bi in vocab:
             one_hot[F2I[bi]] = 1
 

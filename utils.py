@@ -26,8 +26,8 @@ def remove_first_word_if_name(text):
         return sentence
     return text
 
-TRAIN = [(l,text_to_unigrams(t)) for l,t in read_data("train")]
-DEV   = [(l,text_to_unigrams(t)) for l,t in read_data("dev")]
+TRAIN = [(l,text_to_bigrams(t)) for l,t in read_data("train")]
+DEV   = [(l,text_to_bigrams(t)) for l,t in read_data("dev")]
 
 from collections import Counter
 fc = Counter()

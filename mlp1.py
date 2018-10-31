@@ -60,7 +60,7 @@ def loss_and_gradients(x, y, params):
     x_input = np.array(x)
     x_input = x_input[:,np.newaxis]
     gW = np.dot(x_input,grad_pre_tanh_numpy)
-
+    #loss += (np.sum(W**2) + np.sum(b**2) + np.sum(U**2) + np.sum(b_tag**2)) ** 2
     return loss,[gW,gb,gU,gb_tag]
 
 
@@ -76,10 +76,10 @@ def create_classifier(in_dim, hid_dim, out_dim):
     return:
     a flat list of 4 elements, W, b, U, b_tag.
     """
-    W = np.random.rand(in_dim,hid_dim)
-    b = np.random.rand(hid_dim)
-    U = np.random.rand(hid_dim,out_dim)
-    b_tag = np.random.rand(out_dim)
+    W = np.random.rand(in_dim,hid_dim) * (2.0/float(in_dim+hid_dim))
+    b = np.random.rand(hid_dim) * (1.0/float(hid_dim))
+    U = np.random.rand(hid_dim,out_dim) * (2.0/float(out_dim+hid_dim))
+    b_tag = np.random.rand(out_dim) * (1.0/float(out_dim))
     params = [W,b,U,b_tag]
     return params
 

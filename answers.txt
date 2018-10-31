@@ -12,19 +12,19 @@
    What’s the best you can do with the log-linear model with
    these features? What’s the best you can do with the MLP?
 
-   A: Unigram features reduces both models accurcy.
+   A: Unigram features reduces both models accuracy.
       logliner model:
       99 0.757341416639 0.741216795201 0.65
 
       mlp1:
-      99 0.606152246863 0.786632390746 0.62
+      99 0.606152246863 0.786632390746 0.68
 
 3. Verify that your MLP can learn the XOR function
    (you can see a training- set for XOR in the file xor data.py).
    How many iterations does it take to correctly solve xor?
 
     It took the module 37 iteration to learn the XOR problem.
-     
+
 
 
 
