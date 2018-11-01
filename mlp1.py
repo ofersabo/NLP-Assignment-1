@@ -60,7 +60,12 @@ def loss_and_gradients(x, y, params):
     x_input = np.array(x)
     x_input = x_input[:,np.newaxis]
     gW = np.dot(x_input,grad_pre_tanh_numpy)
-    #loss += (np.sum(W**2) + np.sum(b**2) + np.sum(U**2) + np.sum(b_tag**2)) ** 2
+    # loss += (np.sum(W**2) + np.sum(b**2) + np.sum(U**2) + np.sum(b_tag**2))
+    # gW += 2 * W
+    # gb += 2 * b
+    # gU += 2 * U
+    # gb_tag += 2 * b_tag
+
     return loss,[gW,gb,gU,gb_tag]
 
 

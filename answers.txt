@@ -1,10 +1,10 @@
 1. Can you get better accuracies on the language identification
  task using the multi-layer perceptron?
 
- A: No, I received better accuracy on this task with the logliner model.
+ A: Yes, multi-layer perceptron received better accuracy on this task, the difference isn't much.
  To be precise:
  train logLiner: 0.88 accuracy
- train multi layer perceptopn: 0.72 accuracy
+ train multi layer perceptopn: 0.89 accuracy
  Each model has it's own learning rate.
 
 2. Switch the feature set of the

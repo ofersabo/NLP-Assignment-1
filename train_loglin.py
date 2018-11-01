@@ -65,11 +65,10 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
             # YOUR CODE HERE
             # update the parameters according to the gradients
             # and the learning rate.
-            print type(params[0])
             params[0] -= grads[0] * learning_rate
             params[1] -= grads[1] * learning_rate
 
-        if ((I+1)%10 == 0 ): learning_rate /= 2
+        if ((I+1)%20 == 0 ): learning_rate /= 5
         train_loss = cum_loss / len(train_data)
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)

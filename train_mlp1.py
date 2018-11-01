@@ -18,14 +18,10 @@ def accuracy_on_dataset(dataset, params):
         # Compute the accuracy (a scalar) of the current parameters
         # on the dataset.
         # accuracy is (correct_predictions / all_predictions)
-
         # one_hot = features  XOR PROBLEM
 
         label = utils.L2I[label]
         one_hot = feats_to_vec(features)
-
-
-
 
         predicted_label = mlp.predict(one_hot,params)
         if (predicted_label != label):
@@ -64,10 +60,10 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
             # and the learning rate.
 
             for i in range(len(params)):
-                eff_grad = grads[i] * learning_rate[i]
+                eff_grad = grads[i] * learning_rate
                 params[i] -= eff_grad
 
-
+        #if ((I + 1) % 10 == 0): learning_rate /= 2
         train_loss = cum_loss / len(train_data)
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)
@@ -84,7 +80,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
         train_accuracy = accuracy_on_dataset(train_data, best_params)
         dev_accuracy = accuracy_on_dataset(dev_data, best_params)
         print "best_params"
-        print best_params_index, train_accuracy, dev_accuracy
+        print best_params_index, train_accuracy, dev_accuracy,learning_rate
         return best_params
     else:
         return params
@@ -102,12 +98,13 @@ if __name__ == '__main__':
     y_dev = [l[0] for l in dev_data]
     X_dev = [l[1] for l in dev_data]
     num_iterations = 100
-    learning_rate = [1e-3, 1e-3, 1e-3, 1e-3]
+
     out_dim = len(utils.L2I)
     in_dim = len(utils.vocab)
+    learning_rate = 6.46428571e-04
     #from xor_data import data
     #train_data = data XOR problem
     #dev_data = data XOR problem
-    params = mlp.create_classifier(in_dim, hid_dim=5,out_dim = out_dim)
+    params = mlp.create_classifier(in_dim, hid_dim=4,out_dim = out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
 
