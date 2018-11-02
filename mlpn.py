@@ -1,16 +1,42 @@
 import numpy as np
-
-from loglinear import softmax
 STUDENT={'name': 'Ofer Sabo',
          'ID': '201511110'}
 
 def classifier_output(x, params):
     # YOUR CODE HERE.
-    probs = 0
+    post_activation = []
+    main_input = (np.array(x)[np.newaxis, :])
+    num_tanh_layers = (len(params) - 2) / 2
+    for i in range(num_tanh_layers):
+        if i == 0:
+            layer_input = main_input
+        else:
+            layer_input = post_activation[-1]
+        result_after_tanh = go_through_tanh(layer_input, params[2 * i], params[2 * i + 1])
+        post_activation.append(result_after_tanh)
+    probs = soft_max_function_result(post_activation[-1], params[-2:])
     return probs
+
 
 def predict(x, params):
     return np.argmax(classifier_output(x, params))
+
+
+def go_through_tanh(x,W,b):
+    multi = np.dot(x, W)
+    output = multi + b
+    return np.tanh(output)
+
+
+def soft_max_function_result(x,params):
+    W,b = params
+    multi = np.dot(x,W)
+    score = multi.flatten() + b
+    score = score - np.max(score)
+    probs = np.exp(score)
+    suming = np.sum(probs)
+    return_value = probs / suming
+    return return_value
 
 def loss_and_gradients(x, y, params):
     """
@@ -31,38 +57,48 @@ def loss_and_gradients(x, y, params):
     """
     # YOU CODE HERE
     post_activation = []
-    pre_activation  = []
     result_at_layer = []
-    post_activation.append(x)
-    pre_activation.append(None)
-    num_hidden_layers = len(params)/2 - 1
-    for i in range(num_hidden_layers):
-        output = post_activation[2*i] * params[2*i] + params[2*i+1]
-        pre_activation.append(np.copy(output))
-        post_activation.append(np.tanh(output))
-
-    probs = softmax(post_activation[-1])
-    loss = - np.log(probs[y])
-    grads = []
-    gW = np.zeros_like(W)
-    gb = np.zeros_like(b)
-    gW += probs
-    gb += probs
-    gW /= np.sum(probs)
-    gb /= np.sum(probs)
+    main_input = (np.array(x)[np.newaxis,:])
+    num_tanh_layers = (len(params)-2)/2
+    for i in range(num_tanh_layers):
+        if i == 0: layer_input = main_input
+        else: layer_input = post_activation[-1]
+        result_after_tanh = go_through_tanh(layer_input,params[2*i],params[2*i+1])
+        post_activation.append(result_after_tanh)
+    soft_max_result = soft_max_function_result(post_activation[-1],params[-2:])
+    loss = - np.log(soft_max_result[y])
+    gW = np.zeros_like(params[-2])
+    gb = np.zeros_like(params[-1])
+    gW += soft_max_result
+    gb += soft_max_result
     gW[:, y] -= 1
     gb[y] -= 1
-    gW = (x.T * gW)
+    gW = (post_activation[-1].T * gW)
+
+    grads = []
     grads.append(gb)
     grads.append(gW)
-    for i in range(num_hidden_layers):
+    for i in range(num_tanh_layers):
         db_next = grads[2*i]
-        dW_next = grads[2*i+1]
-        z = post_activation[num_hidden_layers - i + 1]
-        q = post_activation[num_hidden_layers - i ]
-        dZ = np.dot(db_next,np.matrix(dW_next).T)
-        db_pre = (np.ones_like(q.shape[1]) - (z ** 2)) * dZ
-        dW_pre 
+        #dW_next = grads[2*i+1]
+        x_next  = post_activation[-(i+1)]
+        if i == num_tanh_layers-1:
+            x_pre = main_input
+        else:
+            x_pre   = post_activation[-(i+2)]
+        W       = params[-(2*i+2)]
+        dout    = np.dot(db_next,W.T)
+        db_pre  = (np.ones_like(x_next) - (x_next ** 2)) * dout
+        dW_pre  =  np.dot(x_pre.T,db_pre)
+        #dout_pre = db_pre * W.T
+        grads.append(db_pre.flatten())
+        grads.append(dW_pre)
+
+    return loss,grads[::-1]
+
+
+
+
 
 def create_classifier(dims):
     """
@@ -101,56 +137,25 @@ if __name__ == '__main__':
     # If they pass, it is likely, but not certainly, correct.
     from grad_check import gradient_check
 
-    params = create_classifier([3,10,4])
-
-    W, b, U, b_tag = params
+    params = create_classifier([3,40,100,2,50,10,4])
 
     for i in range(len(params)):
         print params[i].shape
 
-    def _loss_and_W_grad(W):
-        global U
-        global b
-        global b_tag
-        loss,grads = loss_and_gradients([1,2,3],0,[W, b, U, b_tag])
-        return loss,grads[0]
 
-    def _loss_and_b_grad(b):
-        global U
-        global W
-        global b_tag
-        loss,grads = loss_and_gradients([1,2,3],0,[W, b, U, b_tag])
-        return loss,grads[1]
+    def _loss_and_grad_for_check(parameter):
+        global params
+        #print (params[2])
+        params[index] = parameter
+        loss,grads = loss_and_gradients([1,2,3],0,params)
+        return loss,grads[index]
 
-    def _loss_and_U_grad(U):
-        global b_tag
-        global W
-        global b
-        loss,grads = loss_and_gradients([1,2,3],0,[W, b, U, b_tag])
-        return loss,grads[2]
-
-    def _loss_and_b_tag_grad(b_tag):
-        global U
-        global W
-        global b
-        loss,grads = loss_and_gradients([1,2,3],0,[W, b, U, b_tag])
-        return loss,grads[3]
 
     for _ in xrange(100):
-        U = np.random.randn(U.shape[0],U.shape[1])
-        b_tag = np.random.randn(b_tag.shape[0])
-        b = np.random.randn(b.shape[0])
-        if (not gradient_check(_loss_and_b_grad, b)):
-            print "ERROR"
-            exit()
-        if (not gradient_check(_loss_and_W_grad, W)):
-            print "ERROR"
-            exit()
-        if (not gradient_check(_loss_and_U_grad, U)):
-            print "ERROR"
-            exit()
-        if (not gradient_check(_loss_and_b_tag_grad, b_tag)):
-            print "ERROR"
-            exit()
-
+        for i in range(len(params)):
+            index = i
+            parametr = np.random.random_sample(params[i].shape)
+            if (not gradient_check(_loss_and_grad_for_check, parametr)):
+                print "ERROR"
+                exit()
 

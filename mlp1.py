@@ -133,6 +133,7 @@ if __name__ == '__main__':
         U = np.random.randn(U.shape[0],U.shape[1])
         b_tag = np.random.randn(b_tag.shape[0])
         b = np.random.randn(b.shape[0])
+        W = np.random.randn(W.shape[0],W.shape[1])
         if (not gradient_check(_loss_and_b_grad, b)):
             print "ERROR"
             exit()

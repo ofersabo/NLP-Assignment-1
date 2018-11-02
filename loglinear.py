@@ -66,6 +66,7 @@ def loss_and_gradients(x, y, params):
     x = np.array(x)
     x = x[np.newaxis,:]
     probs = classifier_output(x,[W,b])
+    #print probs
     loss = - np.log(probs[y])
     gW = np.zeros_like(W)
     gb = np.zeros_like(b)
