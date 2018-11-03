@@ -41,7 +41,6 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
     learning_rate: the learning rate to use.
     params: list of parameters (initial values)
     """
-    previous_grads =  [None] * 4
     max_dev_accuracy = dev_accuracy = 0
     for I in xrange(num_iterations):
         cum_loss = 0.0 # total loss in this iteration.
@@ -108,3 +107,20 @@ if __name__ == '__main__':
     params = mlp.create_classifier(in_dim, hid_dim=4,out_dim = out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
 
+    # predict on test
+    test_data = utils.read_data("test")
+    f = open("test.pred", "w+")
+    inv_map = {v: k for k, v in utils.L2I.iteritems()}
+    index = 0
+    for label, features in test_data:
+        # YOUR CODE HERE
+        # Compute the accuracy (a scalar) of the current parameters
+        # on the dataset.
+        index += 1
+        #label = utils.L2I[label]
+        one_hot = feats_to_vec(features)
+
+        predicted_label = mlp.predict(one_hot,trained_params)
+        f.write("%s\t%s" % ((inv_map[predicted_label]),features))
+        if (index != 300):
+            f.write("\n")
