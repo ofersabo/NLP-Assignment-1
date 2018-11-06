@@ -140,7 +140,7 @@ if __name__ == '__main__':
     params = create_classifier([3,40,100,2,50,10,4])
 
     for i in range(len(params)):
-        print params[i].shape
+        print (params[i].shape)
 
 
     def _loss_and_grad_for_check(parameter):
@@ -156,6 +156,6 @@ if __name__ == '__main__':
             index = i
             parametr = np.random.random_sample(params[i].shape)
             if (not gradient_check(_loss_and_grad_for_check, parametr)):
-                print "ERROR"
+                print ("ERROR")
                 exit()
 

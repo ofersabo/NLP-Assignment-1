@@ -73,7 +73,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)
         #if (dev_accuracy > 0.88): start_count = True
-        print I, train_loss, train_accuracy, dev_accuracy
+        print (I, train_loss, train_accuracy, dev_accuracy)
     return params
 
 if __name__ == '__main__':

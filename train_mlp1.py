@@ -66,7 +66,7 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
         train_loss = cum_loss / len(train_data)
         train_accuracy = accuracy_on_dataset(train_data, params)
         dev_accuracy = accuracy_on_dataset(dev_data, params)
-        print I, train_loss, train_accuracy, dev_accuracy
+        print (I, train_loss, train_accuracy, dev_accuracy)
         if (dev_accuracy  >= max_dev_accuracy) and (dev_accuracy > 0.6):
             max_dev_accuracy = dev_accuracy
             best_params = []
@@ -78,8 +78,9 @@ def train_classifier(train_data, dev_data, num_iterations, learning_rate, params
     if (max_dev_accuracy > 0.6):
         train_accuracy = accuracy_on_dataset(train_data, best_params)
         dev_accuracy = accuracy_on_dataset(dev_data, best_params)
-        print "best_params"
-        print best_params_index, train_accuracy, dev_accuracy,learning_rate
+        print ("best_params")
+        print (" train_accuracy, dev_accuracy")
+        print (train_accuracy, dev_accuracy)
         return best_params
     else:
         return params
@@ -104,7 +105,7 @@ if __name__ == '__main__':
     #from xor_data import data
     #train_data = data XOR problem
     #dev_data = data XOR problem
-    params = mlp.create_classifier(in_dim, hid_dim=4,out_dim = out_dim)
+    params = mlp.create_classifier(in_dim, hid_dim=15,out_dim = out_dim)
     trained_params = train_classifier(train_data, dev_data, num_iterations, learning_rate, params)
 
     # predict on test

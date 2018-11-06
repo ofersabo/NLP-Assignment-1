@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # This file provides code which you may or may not find helpful.
 # Use it if you want, or ignore it.
 import random

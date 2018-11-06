@@ -135,16 +135,16 @@ if __name__ == '__main__':
         b = np.random.randn(b.shape[0])
         W = np.random.randn(W.shape[0],W.shape[1])
         if (not gradient_check(_loss_and_b_grad, b)):
-            print "ERROR"
+            print ("ERROR")
             exit()
         if (not gradient_check(_loss_and_W_grad, W)):
-            print "ERROR"
+            print ("ERROR")
             exit()
         if (not gradient_check(_loss_and_U_grad, U)):
-            print "ERROR"
+            print ("ERROR")
             exit()
         if (not gradient_check(_loss_and_b_tag_grad, b_tag)):
-            print "ERROR"
+            print ("ERROR")
             exit()
 
 
